@@ -15,8 +15,7 @@ import java.util.List;
 // 2eme type heritage :@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 //3eme type :
 //@Inheritance(strategy = InheritanceType.JOINED)
-
-//1ere type : @DiscriminatorColumn(name = "TYPE",length = 4)
+@DiscriminatorColumn(name = "TYPE",length = 4)
 @Data @NoArgsConstructor
 @AllArgsConstructor
 // 2eme type heritage : public abstract class CompteBancaire {
@@ -32,7 +31,7 @@ public  class CompteBancaire{
     @ManyToOne
     private Client client;
 
-    @OneToMany(mappedBy = "compteBancaire")
+    @OneToMany(mappedBy = "compteBancaire",fetch = FetchType.LAZY)
     private List<CompteOperation> compteOperations;
 
 }

@@ -22,6 +22,7 @@ public class CompteOperation {
     private  double montant;
     @Enumerated(EnumType.STRING)
     private TypeOperation typeOperation;
+    private  String description;
     @ManyToOne
     private  CompteBancaire compteBancaire;
 }
