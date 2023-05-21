@@ -27,8 +27,7 @@ public  class CompteBancaire{
 
     @Enumerated(EnumType.STRING)
     private StatusCompte status;
-    private String devise;
-    @ManyToOne
+     @ManyToOne
     private Client client;
 
     @OneToMany(mappedBy = "compteBancaire",fetch = FetchType.LAZY)

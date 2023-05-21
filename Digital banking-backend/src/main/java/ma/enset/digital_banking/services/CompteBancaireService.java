@@ -1,6 +1,6 @@
 package ma.enset.digital_banking.services;
 
-import ma.enset.digital_banking.dtos.ClientDTO;
+import ma.enset.digital_banking.dtos.*;
 import ma.enset.digital_banking.entities.AjoutCompte;
 import ma.enset.digital_banking.entities.Client;
 import ma.enset.digital_banking.entities.CompteBancaire;
@@ -11,12 +11,14 @@ import ma.enset.digital_banking.exceptions.CompteBancaireNotFoundException;
 import java.util.List;
 
 public interface CompteBancaireService {
-    Client saveClient(Client client);
-    CompteCurrant saveCurrentCompte(double initialSolde, double decouvert, Long id_clt);
-    AjoutCompte saveAjoutCompte(double initialSolde, double tauxInteret, Long id_clt);
+
+    ClientDTO saveClient(ClientDTO clientDto);
+
+    CurrentCompteBancaireDTO saveCurrentCompte(double initialSolde, double decouvert, Long id_clt);
+    AjoutCompteBancaireDTO saveAjoutCompte(double initialSolde, double tauxInteret, Long id_clt);
     List<ClientDTO> listclients();
 
-    CompteBancaire getCompteBancaire(String id_compte) throws CompteBancaireNotFoundException;
+    CompteBancaireDTO getCompteBancaire(String id_compte) throws CompteBancaireNotFoundException;
 
     // creation des operation credit et debit
 
@@ -24,5 +26,15 @@ public interface CompteBancaireService {
     void credit(String id_compte,double montant,String description) throws CompteBancaireNotFoundException;
     void transfer(String id_compteSource,String id_compteDestination,double montant) throws CompteBancaireNotFoundException, BalanceNotSufficientException;
 
-    List<CompteBancaire> compteBancaireList();
+    List<CompteBancaireDTO> compteBancaireList();
+
+    ClientDTO getClient(Long id_client);
+
+    ClientDTO updateClient(ClientDTO clientDto);
+
+    void deleteClient(Long id_client);
+
+    List<CompteOperationDTO> historiqueCompte(String id_compte);
+
+    CompteHistoryDTO getComptesHistory(String idCompte, int page, int size) throws CompteBancaireNotFoundException;
 }

@@ -1,5 +1,9 @@
 package ma.enset.digital_banking;
 
+import ma.enset.digital_banking.dtos.AjoutCompteBancaireDTO;
+import ma.enset.digital_banking.dtos.ClientDTO;
+import ma.enset.digital_banking.dtos.CompteBancaireDTO;
+import ma.enset.digital_banking.dtos.CurrentCompteBancaireDTO;
 import ma.enset.digital_banking.entities.*;
 import ma.enset.digital_banking.enums.StatusCompte;
 import ma.enset.digital_banking.enums.TypeOperation;
@@ -32,7 +36,7 @@ public class DigitalBankingBackendApplication {
         return args -> {
             Stream.of("Islam","Hania","Khalid","Abdelkbir").forEach(
                     name->{
-                        Client client=new Client();
+                        ClientDTO client=new ClientDTO();
                         client.setName(name);
                         client.setEmail(name+"@gmail.com");
                         compteBancaireService.saveClient(client);
@@ -40,23 +44,30 @@ public class DigitalBankingBackendApplication {
             compteBancaireService.listclients().forEach(client -> {
                 compteBancaireService.saveCurrentCompte(Math.random()*900000,9000,client.getId());
                 compteBancaireService.saveAjoutCompte(Math.random()*1200000,5.5,client.getId());
-                List<CompteBancaire> compteBancaireList=compteBancaireService.compteBancaireList();
-                for (CompteBancaire compte:compteBancaireList) {
-                    for (int i=0;i<10;i++){
-                        try {
-                            compteBancaireService.credit(compte.getId(),10000+Math.random()*120000,"Credit");
-                            compteBancaireService.debit(compte.getId(),10000+Math.random()*900,"Debit");
-
-                        } catch (CompteBancaireNotFoundException e) {
-                            throw new RuntimeException(e);
-                        } catch (BalanceNotSufficientException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
 
             });
            // banqueService.consulter();
+            List<CompteBancaireDTO> compteBancaireList=compteBancaireService.compteBancaireList();
+            for (CompteBancaireDTO compte:compteBancaireList) {
+                for (int i=0;i<10;i++){
+                    try {
+                        String id_compte;
+                        if(compte instanceof AjoutCompteBancaireDTO){
+                            id_compte=((AjoutCompteBancaireDTO)compte).getId();
+                        }
+                        else {
+                            id_compte=((CurrentCompteBancaireDTO)compte).getId();
+                        }
+                        compteBancaireService.credit(id_compte,10000+Math.random()*120000,"Credit");
+                        compteBancaireService.debit(id_compte,10000+Math.random()*900,"Debit");
+
+                    } catch (CompteBancaireNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (BalanceNotSufficientException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         };
     }
     //@Bean
