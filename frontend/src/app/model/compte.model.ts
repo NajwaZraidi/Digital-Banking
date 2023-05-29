@@ -1,4 +1,4 @@
-export interface CompteDeatails {
+export interface CompteDetails {
   id_compte:           string;
   solde:               number;
   currentPage:         number;
@@ -10,7 +10,7 @@ export interface CompteDeatails {
 export interface CompteOperation{
   id:            number;
   dateOperation: Date;
-  montant:       number;
+  montant: number;
   typeOperation: string;
   description:   string;
 }

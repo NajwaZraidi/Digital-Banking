@@ -5,6 +5,7 @@ import {catchError, map, Observable, throwError} from "rxjs";
 import {Client} from "../model/client.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import Swal from 'sweetalert2';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-clients',
@@ -16,7 +17,7 @@ export class ClientsComponent  implements  OnInit{
   //clients:any;
   errorMessage!:string ;
   rechercheformGroup!: FormGroup;
-  constructor(private clientService:ClientService,private  fb:FormBuilder) {
+  constructor(private clientService:ClientService,private  fb:FormBuilder,private router :Router) {
   }
   ngOnInit(): void {
     this.rechercheformGroup=this.fb.group(
@@ -89,6 +90,11 @@ export class ClientsComponent  implements  OnInit{
         Swal.fire('Annulation', "Le client n' a pas supprimer :)", 'error');
       }
     });
+
+  }
+
+  handleCustomerAccounts(c: Client) {
+      this.router.navigateByUrl("/comptes-client/"+c.id,{state :c});
 
   }
 }

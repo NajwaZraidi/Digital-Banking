@@ -1,27 +1,91 @@
-<div class="container m-2">
-<div class="row">
-  <div class="col col-md-6">
-    <div class="card">
-      <div class="card-header">Comptes</div>
-      <div class="card-body">
-        <form [formGroup]="compteFormGroup" (ngSubmit)="handleSearchAccount()" >
-          <div class="input-group">
-            <label class="input-group-text">N° de compte :</label>
-            <input type="text" formControlName="idcompte" class="form-control">
-            <button type="submit" class="btn btn-info"></button>
-            <i class="bi bi-search"></i>
-          </div>
-        </form>
-
+<div class="container mt-2">
+  <div class="row">
+    <div class="col col-md-6">
+      <div class="card">
+        <div class="card-header">Comptes</div>
+        <div class="card-body">
+          <form [formGroup]="CompteFormGroup" (ngSubmit)="handleSearchAccount()">
+            <div class="input-group">
+              <label class="input-group-text">N° de compte :</label>
+              <input type="text" formControlName="id_compte" class="form-control">
+              <button class="btn btn-info">
+                <i class="bi bi-search"></i>
+                Search
+              </button>
+            </div>
+          </form>
+          <ng-template #errorTemplate>
+            <ng-container *ngIf="errorMessage ; else loading">
+              <div class="text-danger">{{errorMessage}}</div>
+            </ng-container>
+            <ng-template #loading>
+              Loading ...
+            </ng-template>
+          </ng-template>
+          <ng-container *ngIf="CompteObservable | async as compteDetails">
+            <br>
+            <div class="mb-2">
+              <label>Solde :</label>
+              <label><strong>{{compteDetails.solde | number : '1.2-2'}}</strong></label>
+            </div>
+            <table class="table">
+              <thead>
+              <th>ID</th><th>Date</th><th>Type</th><th>Montant</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let op of compteDetails.compteOperationDTOS">
+                <td>{{op.id}}</td>
+                <td>{{op.dateOperation | date : 'dd-MM-yyyy:HH-mm-ss'}}</td>
+                <td>{{op.typeOperation}}</td>
+                <td class="text-end">{{op.montant | number : '1.2-2'}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <ul class="nav nav-pills">
+              <li *ngFor="let item of [].constructor(compteDetails.totalPages);let page=index">
+                <a [ngClass]="page==currentPage?'btn-info':'btn-outline-info'" (click)="gotoPage(page)" class="btn  ms-1 mt-1">{{page}}</a>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-6">
+      <div class="card" *ngIf="CompteObservable">
+        <div class="card-header">Operations</div>
+        <div class="card-body">
+<!--{{operationFromGroup.value| json }}-->
+          <form [formGroup]="operationFromGroup" (ngSubmit)="handleAccountOperation()" method="post">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="TypeOperation" value="DEBIT">
+              <label class="form-check-label">DEBIT:</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="TypeOperation" value="CREDIT">
+              <label class="form-check-label">CREDIT:</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="TypeOperation" value="TRANSFER">
+              <label class="form-check-label">TRANSFER:</label>
+            </div>
+            <div class="mb-3" *ngIf="operationFromGroup.value.TypeOperation=='TRANSFER'">
+              <label class="form-label">  Compte Destination :</label>
+              <input type="text" formControlName="comptesDestination" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Montant :</label>
+              <input type="text" formControlName="Montant" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description :</label>
+              <input type="text" formControlName="description" class="form-control">
+            </div>
+            <div class="d-grid mb-3">
+              <button class="btn btn-success">Enregistrer</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col col-md-6">
-
-  </div>
-</div>
-
-
-
-
 </div>

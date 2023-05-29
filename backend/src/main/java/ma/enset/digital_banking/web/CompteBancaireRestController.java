@@ -3,9 +3,8 @@ package ma.enset.digital_banking.web;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ma.enset.digital_banking.dtos.CompteBancaireDTO;
-import ma.enset.digital_banking.dtos.CompteHistoryDTO;
-import ma.enset.digital_banking.dtos.CompteOperationDTO;
+import ma.enset.digital_banking.dtos.*;
+import ma.enset.digital_banking.exceptions.BalanceNotSufficientException;
 import ma.enset.digital_banking.exceptions.CompteBancaireNotFoundException;
 import ma.enset.digital_banking.services.CompteBancaireService;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +39,21 @@ public class CompteBancaireRestController {
                                        @RequestParam(name = "size",defaultValue = "5") int size) throws CompteBancaireNotFoundException {
         return  compteBancaireService.getComptesHistory(id_compte,page,size);
     }
-
+    @PostMapping("/comptes/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws CompteBancaireNotFoundException, BalanceNotSufficientException {
+        this.compteBancaireService.debit(debitDTO.getId_compte(),debitDTO.getMontant(),debitDTO.getDescription());
+        return debitDTO;
+    }
+    @PostMapping("/comptes/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws CompteBancaireNotFoundException {
+        this.compteBancaireService.credit(creditDTO.getId_compte(),creditDTO.getMontant(),creditDTO.getDescription());
+        return creditDTO;
+    }
+    @PostMapping("/comptes/transfer")
+    public void transfer(@RequestBody TransferRequestDTO transferRequestDTO) throws CompteBancaireNotFoundException, BalanceNotSufficientException {
+        this.compteBancaireService.transfer(
+                transferRequestDTO.getCompteSource(),
+                transferRequestDTO.getCompteDestination(),
+                transferRequestDTO.getMontant());
+    }
 }
