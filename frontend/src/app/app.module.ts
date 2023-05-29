@@ -10,7 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import { NewClientComponent } from './new-client/new-client.component';
 import { ComptesClientComponent } from './comptes-client/comptes-client.component';
-import { CompteComponent } from './compte/compte.component';
+
 
 @NgModule({
   declarations: [
@@ -19,8 +19,7 @@ import { CompteComponent } from './compte/compte.component';
     ClientsComponent,
     ComptesComponent,
     NewClientComponent,
-    ComptesClientComponent,
-    CompteComponent
+    ComptesClientComponent
   ],
   imports: [
     BrowserModule,

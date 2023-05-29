@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {catchError, Observable, throwError} from "rxjs";
 import {CompteDetails} from "../model/compte.model";
 import {ComptesService} from "../services/comptes.service";
+import Swal from "sweetalert2";
 
 
 @Component({
@@ -56,7 +57,7 @@ export class ComptesComponent implements OnInit {
     if(TypeOperation=='DEBIT'){
       this.compteService.debit(id_compte, Montant,description).subscribe({
         next : (data)=>{
-          alert("Success Credit");
+          Swal.fire("L\'ajout",'l\'opération credit est enregistrer','success');
           this.operationFromGroup.reset();
           this.handleSearchAccount();
         },
@@ -67,7 +68,8 @@ export class ComptesComponent implements OnInit {
     } else if(TypeOperation=='CREDIT'){
       this.compteService.credit(id_compte, Montant,description).subscribe({
         next : (data)=>{
-          alert("Success Debit");
+          Swal.fire("L\'ajout",'l\'opération debit est enregistrer','success');
+
           this.operationFromGroup.reset();
           this.handleSearchAccount();
         },
@@ -79,7 +81,8 @@ export class ComptesComponent implements OnInit {
     else if(TypeOperation=='TRANSFER'){
       this.compteService.transfer(id_compte,compteDestination, Montant,description).subscribe({
         next : (data)=>{
-          alert("Success Transfer");
+          Swal.fire("L\'ajout",'l\'opération de transfer est enregistrer','success');
+
           this.operationFromGroup.reset();
           this.handleSearchAccount();
         },
