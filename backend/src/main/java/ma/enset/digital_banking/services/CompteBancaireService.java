@@ -39,5 +39,6 @@ public interface CompteBancaireService {
     CompteHistoryDTO getComptesHistory(String idCompte, int page, int size) throws CompteBancaireNotFoundException;
 
     List<ClientDTO> rechercher(String motCle);
+    List<CompteBancaireDTO> comptesListOfClient(Long id_client);
 
 }

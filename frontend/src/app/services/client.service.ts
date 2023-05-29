@@ -24,5 +24,12 @@ export class ClientService {
   public delectClient(id : number){
     return this.http.delete("http://localhost:1975/clients/"+id)
   }
+  public getComptesOfClient(id: number): any {
+    return this.http.get<any>( "http://localhost:1975/client/" + id + "/comptes");
+  }
+  public getclient(id: number): any {
+    return this.http.get<any>("http://localhost:1975/clients/" + id);
+  }
+
 }
 

@@ -203,5 +203,21 @@ public class CompteBancaireServiceImpl implements CompteBancaireService {
             dtoMapper.fromClient(clt)).collect(Collectors.toList());
         return clientDTOS;
     }
+    @Override
+    public List<CompteBancaireDTO> comptesListOfClient(Long id){
+        Client client = new Client();
+        client.setId(id);
+        List<CompteBancaire> compteBancaires = compteBancaireRepository.findByClient(client);
+        List<CompteBancaireDTO> compteBancaireDTOS = compteBancaires.stream().map(compte -> {
+            if (compte instanceof AjoutCompte) {
+                AjoutCompte ajoutCompte = (AjoutCompte) compte;
+                return dtoMapper.fromSavingCompteBanque(ajoutCompte);
+            } else {
+                CompteCurrant currentAccount = (CompteCurrant) compte;
+                return dtoMapper.fromCurrentCompteBanque(currentAccount);
+            }
+        }).collect(Collectors.toList());
+        return compteBancaireDTOS;
+    }
 
 }

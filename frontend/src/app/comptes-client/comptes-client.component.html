@@ -1,1 +1,36 @@
-<p>comptes-client works!</p>
+<div class="container">
+  <br><br>
+  <ng-container *ngIf="true; else failureOrLading">
+    <div style="text-align: center" class="card">
+      <div class="card-header">{{clientName}}</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Account Id</th>
+            <th>Balance</th>
+            <th>Type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let compt  of comptes ">
+            <td>{{compt.id}}</td>
+            <td>{{compt.solde}} DHs</td>
+            <td>{{compt.type.replace('Compte',' Compte')}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #failureOrLading>
+    <ng-container *ngIf="errorMessage; else loading">
+      <div class="text-danger">
+        {{errorMessage}}
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      Loading .....
+    </ng-template>
+  </ng-template>
+</div>

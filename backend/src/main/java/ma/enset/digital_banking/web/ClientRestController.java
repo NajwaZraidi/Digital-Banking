@@ -4,6 +4,7 @@ package ma.enset.digital_banking.web;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.enset.digital_banking.dtos.ClientDTO;
+import ma.enset.digital_banking.dtos.CompteBancaireDTO;
 import ma.enset.digital_banking.entities.Client;
 import ma.enset.digital_banking.services.CompteBancaireService;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +48,10 @@ public class ClientRestController {
     @GetMapping("/clients/recherche")
     public List<ClientDTO> recherche(@RequestParam(name = "motCle",defaultValue = "") String motCle ){
         return compteBancaireService.rechercher(motCle);
+    }
+
+    @GetMapping("/client/{id}/comptes")
+    public List<CompteBancaireDTO> comptesListOfClient(@PathVariable(name = "id") Long id_client) {
+        return compteBancaireService.comptesListOfClient(id_client);
     }
 }
